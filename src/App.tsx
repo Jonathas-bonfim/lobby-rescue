@@ -1,6 +1,14 @@
+import { ThemeProvider } from "@mui/material";
+import PrimaryButton from "./components/Buttons/PrimaryButton";
+import SecondaryButton from "./components/Buttons/SecondaryButton";
+import theme from "./styles/theme";
+
 function App() {
   return (
-    <h1>Hello World</h1>
+    <ThemeProvider theme={theme}>
+      <PrimaryButton>Continuar</PrimaryButton>
+      <SecondaryButton>Secondary Button</SecondaryButton>
+    </ThemeProvider>
   )
 }
 
