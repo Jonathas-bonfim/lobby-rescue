@@ -6,6 +6,7 @@ declare module "@mui/material/styles" {
       blueLobby: string;
       blueLobbyHover: string;
       backgroundBlue: string;
+      backgroundLight: string;
       black: string;
       gray1: string;
       gray2: string;
@@ -18,6 +19,7 @@ declare module "@mui/material/styles" {
       blueLobby?: string;
       blueLobbyHover?: string;
       backgroundBlue?: string;
+      backgroundLight?: string;
       black?: string;
       gray1?: string;
       gray2?: string;
@@ -49,7 +51,8 @@ const theme = createTheme({
     custom: {
       blueLobby: "#22007F",
       blueLobbyHover: "#3100B6",
-      backgroundBlue: "##EFF6FF",
+      backgroundBlue: "#EFF6FF",
+      backgroundLight: "#F4F4F4",
       black: "#353535",
       gray1: "#64748B",
       gray2: "#B1B9C5",
