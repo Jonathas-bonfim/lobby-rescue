@@ -1,15 +1,17 @@
 import { Box, Container } from '@mui/material';
 import Footer from '../../components/Footer';
-import Welcome from '../../components/Welcome';
+import Items from '../../components/Items';
 import theme from '../../styles/theme';
 import { dataAPI } from '../../utils/Mock/dataApi';
+
 const Home = () => {
   return (
     <Box
       sx={{
         width: '100vw',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: dataAPI.background_color ?? theme.palette.custom.backgroundBlue,
@@ -22,18 +24,30 @@ const Home = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
+          justifyContent: 'flex-start',
+          flex: 1,
           width: '100%',
           textAlign: 'center',
           backgroundColor: theme.palette.custom.white,
           borderRadius: '1.125rem',
-          position: 'relative'
+          paddingBottom: '6rem',
         }}
       >
-        <Welcome />
-        <Footer />
+        <Items />
       </Container>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          position: 'relative',
+          bottom: 0,
+        }}
+      >
+        <Footer />
+      </Box>
     </Box>
   );
 };
