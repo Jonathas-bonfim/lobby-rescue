@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const ItemContainer = styled("div")(({ theme }) => ({
+  position: "relative",
   width: "100%",
   border: "1px solid #E0E0E0",
   borderRadius: "6px",

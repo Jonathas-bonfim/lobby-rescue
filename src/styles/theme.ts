@@ -14,6 +14,7 @@ declare module "@mui/material/styles" {
       gray3: string;
       gray4: string;
       white: string;
+      greenSelect: string;
     };
   }
   interface PaletteOptions {
@@ -29,6 +30,7 @@ declare module "@mui/material/styles" {
       gray3?: string;
       gray4?: string;
       white?: string;
+      greenSelect?: string;
     };
   }
 }
@@ -64,6 +66,7 @@ const theme = createTheme({
       gray3: "#D8DCE2",
       gray4: "#F4F4F4",
       white: "#FFFFFF",
+      greenSelect: "#04DDB3",
     },
   },
   typography: {

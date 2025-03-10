@@ -1,8 +1,11 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { ItemProps } from '../../@types/data';
 import theme from '../../styles/theme';
 import { ItemContainer, SizeButton } from './styles';
+
+import checkedIcon from '../../assets/icons/checkbox-checked.svg';
+import uncheckedIcon from '../../assets/icons/checkbox-unchecked.svg';
 
 const Item: React.FC<ItemProps> = ({
   customer_product_id,
@@ -13,23 +16,47 @@ const Item: React.FC<ItemProps> = ({
   sizes_grid,
   sizes,
 }) => {
-  console.log('JB | render item ', {
+
+  console.log('JB | Item ', {
     customer_product_id,
     name,
     quantity,
     optional,
     image_url,
     sizes_grid,
-    sizes,
   });
+
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
 
   const handleSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
   };
 
+  const handleCheckboxChange = () => {
+    setIsSelected(!isSelected);
+  };
+
   return (
     <ItemContainer>
+      <Checkbox
+        checked={isSelected}
+        onChange={handleCheckboxChange}
+        icon={<img src={uncheckedIcon} alt="Unchecked" />}
+        checkedIcon={<img src={checkedIcon} alt="Checked" />}
+        sx={{
+          position: 'absolute',
+          top: '1rem',
+          right: '1rem',
+          zIndex: 1,
+          padding: 0,
+          '& .MuiSvgIcon-root': {
+            width: '2rem',
+            height: '2rem',
+          },
+        }}
+      />
+
       <Box
         component="img"
         src={image_url}
@@ -65,7 +92,7 @@ const Item: React.FC<ItemProps> = ({
             marginBottom: '1rem',
           }}
         >
-          {sizes.map((size) => (
+          {sizes.map((size) =>
             size.id.length && size?.name?.length ? (
               <SizeButton
                 key={size.id}
@@ -77,8 +104,7 @@ const Item: React.FC<ItemProps> = ({
             ) : (
               <></>
             )
-
-          ))}
+          )}
         </Box>
       )}
     </ItemContainer>
