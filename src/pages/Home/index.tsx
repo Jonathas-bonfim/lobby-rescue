@@ -1,6 +1,6 @@
 import { Box, Container } from '@mui/material';
+import DeliveryRecipientForm from '../../components/DeliveryRecipientForm';
 import Footer from '../../components/Footer';
-import Items from '../../components/Items';
 import theme from '../../styles/theme';
 import { dataAPI } from '../../utils/Mock/dataApi';
 
@@ -33,7 +33,8 @@ const Home = () => {
           paddingBottom: '6rem',
         }}
       >
-        <Items />
+        {/* <Items /> */}
+        <DeliveryRecipientForm />
       </Container>
 
       <Box
