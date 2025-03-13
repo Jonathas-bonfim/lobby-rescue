@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid2';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { ETypeProps } from '../../@types/InputBaseProps';
+import DynamicInput from '../../components/Inputs/DynamicInput';
 import TextInput from '../../components/Inputs/TextInput';
 import theme from '../../styles/theme';
 
@@ -27,20 +29,55 @@ const schema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
 });
 
+const extra_questions = [
+  {
+    id: 383,
+    answer_type: "text",
+    question: "Qual seu time favorito?",
+    position: 1,
+    options: [],
+  },
+  {
+    id: 384,
+    answer_type: "text_area",
+    question: "Fale um pouco sobre você",
+    position: 4,
+    options: [],
+  },
+  {
+    id: 385,
+    answer_type: "select_one",
+    question: "Você já participou de algum evento?",
+    position: 3,
+    options: ["Sim", "Não"],
+  },
+  {
+    id: 386,
+    answer_type: "date",
+    question: "Data de nascimento",
+    position: 2,
+    options: [],
+  },
+];
+
 const DeliveryRecipientForm: React.FC = () => {
-  const methods = useForm({
+  const methodsForm = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const {
+    handleSubmit
+  } = methodsForm
+
+  const onSubmit = (data: unknown) => {
     console.log('Dados do destinatário:', data);
   };
 
   return (
-    <FormProvider {...methods}>
+    <FormProvider {...methodsForm}>
       <Box
         component="form"
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -116,6 +153,35 @@ const DeliveryRecipientForm: React.FC = () => {
           <Grid size={{ lg: 3, md: 6 }}>
             <TextInput name="country" label="País" />
           </Grid>
+        </Grid>
+
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <Typography variant="h6" sx={{
+              textAlign: 'left',
+              fontSize: '1rem',
+              fontWeight: '600',
+              color: theme.palette.custom.black
+            }}>
+              Perguntas Adicionais
+            </Typography>
+          </Grid>
+          {extra_questions.map((question) => {
+            console.log('JB | question.answer_type:', question.answer_type);
+            const normalizedAnswerType = question.answer_type.toUpperCase() as keyof typeof ETypeProps;
+            return (
+              <Grid key={question.id} size={{ lg: 6, md: 12 }}>
+                <DynamicInput
+                  type={ETypeProps[normalizedAnswerType]}
+                  name={`extra_question_${question.id}`}
+                  label={question.question}
+                  options={question.options}
+                // getOptionLabel={(option) => option.label} // Se for um objeto com propriedade `label`
+                // getOptionValue={(option) => option.value} // Se for um objeto com propriedade `value`
+                />
+              </Grid>
+            )
+          })}
         </Grid>
       </Box>
     </FormProvider>

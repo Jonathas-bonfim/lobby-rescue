@@ -9,19 +9,23 @@ interface TextAreaProps extends Omit<TextFieldProps, 'name' | 'error' | 'helperT
 }
 
 const TextArea: React.FC<TextAreaProps> = ({ name, rows = 4, ...rest }) => {
-  const { control } = useFormContext();
+  const { control, formState: { errors } } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
       defaultValue=""
-      render={({ field, fieldState: { error } }) => (
+      render={({ field }) => (
         <TextField
           {...field}
           {...rest}
-          error={!!error}
-          helperText={error?.message}
+          error={!!errors[name]}
+          helperText={
+            errors[name] && typeof errors[name]?.message === 'string'
+              ? errors[name]?.message
+              : undefined
+          }
           variant="standard"
           fullWidth
           multiline
