@@ -4,6 +4,7 @@ import { ItemRedeemPageProps } from '../../@types/reedemPages';
 import checkedIcon from '../../assets/icons/checkbox-checked.svg';
 import uncheckedIcon from '../../assets/icons/checkbox-unchecked.svg';
 import theme from '../../styles/theme';
+import { useSnackbar } from '../Snackbar'; // Importe o useSnackbar
 import { ItemContainer, SizeButton } from './styles';
 
 interface ItemProps extends ItemRedeemPageProps {
@@ -24,6 +25,7 @@ const Item: React.FC<ItemProps> = ({
   onSizeSelect,
 }) => {
   const [selectedSize, setSelectedSize] = React.useState<string | null>(null);
+  const { showSnackbar } = useSnackbar();
 
   const handleSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
@@ -33,11 +35,15 @@ const Item: React.FC<ItemProps> = ({
   };
 
   const handleCheckboxChange = () => {
+    if (sizes?.length > 0 && !isSizeSelected) {
+      showSnackbar('Selecione um tamanho antes de escolher o item.', 'warning');
+      return;
+    }
+
     if (onItemSelect) {
       onItemSelect(!isSelected);
     }
   };
-
 
   const isCheckboxDisabled = sizes?.length > 0 && !isSizeSelected;
 
@@ -54,7 +60,6 @@ const Item: React.FC<ItemProps> = ({
               onChange={handleCheckboxChange}
               icon={<img src={uncheckedIcon} alt="Unchecked" />}
               checkedIcon={<img src={checkedIcon} alt="Checked" />}
-              disabled={isCheckboxDisabled}
               sx={{
                 position: 'absolute',
                 top: '1rem',

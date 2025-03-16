@@ -34,7 +34,7 @@ const Home = () => {
   const stepComponents = {
     [ESteps.WELCOME]: <Welcome navigateToStep={navigateToStep} />,
     [ESteps.ITEMS]: <Items navigateToStep={navigateToStep} />,
-    [ESteps.DELIVERY_RECIPIENT]: <DeliveryRecipientForm />,
+    [ESteps.DELIVERY_RECIPIENT]: <DeliveryRecipientForm navigateToStep={navigateToStep} />,
     [ESteps.RESGATE_CONFIRMATION]: <ResgateConfirmation />,
   };
 
@@ -78,7 +78,6 @@ const Home = () => {
             {redeemPageProps?.status === 'ACTIVE' ? (
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {/* Renderiza o componente do step atual e passa a função de navegação */}
                   {React.cloneElement(stepComponents[currentStep], { navigateToStep })}
                 </form>
               </FormProvider>

@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ItemRedeemCreationProps } from '../../@types/redeemForm';
 import { RedeemPageProps } from '../../@types/reedemPages';
@@ -8,9 +8,10 @@ import { ESteps } from '../../@types/steps';
 import { getRedeemPage } from '../../api/api';
 import NavigationButtons from '../Buttons/NavigationButtons';
 import Item from '../Item';
+import { useSnackbar } from '../Snackbar';
 
 interface ItemsProps {
-  navigateToStep: (step: ESteps) => void; // Adicionando a prop navigateToStep
+  navigateToStep: (step: ESteps) => void;
 }
 
 const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
@@ -19,44 +20,83 @@ const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
     queryFn: getRedeemPage,
   });
 
-  const { setValue, watch } = useFormContext();
-  const selectedItems = watch('selectedItems', []);
+  const { setValue } = useFormContext();
+  const { showSnackbar } = useSnackbar();
 
   const [selectedSizes, setSelectedSizes] = useState<{ [itemId: string]: string }>({});
-  const [tempSelectedItems, setTempSelectedItems] = useState<ItemRedeemCreationProps[]>(selectedItems);
+  const [tempSelectedItems, setTempSelectedItems] = useState<ItemRedeemCreationProps[]>([]);
+
+  useEffect(() => {
+    const requiredItems = redeemPageProps.items
+      .filter((item) => !item.optional)
+      .map((item) => ({
+        customer_product_id: item.customer_product_id,
+        size_name: '',
+      }));
+
+    setTempSelectedItems(requiredItems);
+  }, [redeemPageProps.items]);
 
   const handleSizeSelect = useCallback((itemId: string, sizeId: string) => {
     setSelectedSizes((prev) => ({ ...prev, [itemId]: sizeId }));
+
+    setTempSelectedItems((prev) =>
+      prev.map((item) =>
+        item.customer_product_id === itemId ? { ...item, size_name: sizeId } : item
+      )
+    );
   }, []);
 
   const handleItemSelect = useCallback(
     (itemId: string, isSelected: boolean) => {
-      const hasSizes =
-        redeemPageProps?.items?.find((item) => item.customer_product_id === itemId)?.sizes?.length ?? 0 > 0;
+      const item = redeemPageProps.items.find((item) => item.customer_product_id === itemId);
 
-      const isSizeSelected = !!selectedSizes[itemId];
+      if (!item?.optional && !isSelected) {
+        return;
+      }
 
-      if (isSelected && (!hasSizes || isSizeSelected)) {
+      if (isSelected) {
         const newItem: ItemRedeemCreationProps = {
           customer_product_id: itemId,
           size_name: selectedSizes[itemId] || '',
         };
         setTempSelectedItems((prev) => [...prev, newItem]);
-      } else if (!isSelected) {
+      } else {
         setTempSelectedItems((prev) =>
           prev.filter((item) => item.customer_product_id !== itemId)
         );
       }
     },
-    [selectedSizes, redeemPageProps]
+    [redeemPageProps.items, selectedSizes]
   );
 
   const handleConfirmSelection = useCallback(() => {
-    setValue('selectedItems', tempSelectedItems);
-    console.log('Itens selecionados:', tempSelectedItems);
+    const requiredItems = redeemPageProps.items.filter((item) => !item.optional);
+    const itemsWithMissingSizes = requiredItems.filter((item) => {
+      const selectedItem = tempSelectedItems.find(
+        (selected) => selected.customer_product_id === item.customer_product_id
+      );
+      return item.sizes?.length > 0 && !selectedItem?.size_name;
+    });
 
+    if (itemsWithMissingSizes.length > 0) {
+      showSnackbar('Por favor, selecione um tamanho para todos os itens obrigatórios que exigem tamanho.', 'warning');
+      return;
+    }
+
+    const optionalItems = redeemPageProps.items.filter((item) => item.optional);
+    const hasSelectedOptionalItem = optionalItems.some((item) =>
+      tempSelectedItems.some((selected) => selected.customer_product_id === item.customer_product_id)
+    );
+
+    if (!hasSelectedOptionalItem) {
+      showSnackbar('Selecione pelo menos 1 item opcional para continuar.', 'warning');
+      return;
+    }
+
+    setValue('selectedItems', tempSelectedItems);
     navigateToStep(ESteps.DELIVERY_RECIPIENT);
-  }, [tempSelectedItems, setValue, navigateToStep]);
+  }, [tempSelectedItems, setValue, navigateToStep, redeemPageProps.items, showSnackbar]);
 
   return (
     <Container>
@@ -81,16 +121,16 @@ const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
           gap: '2rem',
-          marginBottom: '2.5rem'
+          marginBottom: '2.5rem',
         }}
       >
-        {redeemPageProps?.items.map((item) => (
+        {redeemPageProps.items.map((item) => (
           <Item
             key={item.customer_product_id}
             {...item}
-            isSelected={
-              !item.optional || tempSelectedItems.some((selectedItem) => selectedItem.customer_product_id === item.customer_product_id)
-            }
+            isSelected={tempSelectedItems.some(
+              (selectedItem) => selectedItem.customer_product_id === item.customer_product_id
+            )}
             isSizeSelected={!!selectedSizes[item.customer_product_id]}
             onItemSelect={
               item.optional
@@ -103,6 +143,7 @@ const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
           />
         ))}
       </Box>
+
       <NavigationButtons
         handleNextStep={handleConfirmSelection}
         handlePrevStep={() => navigateToStep(ESteps.WELCOME)}

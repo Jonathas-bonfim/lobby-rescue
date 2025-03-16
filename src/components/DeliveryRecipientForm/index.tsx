@@ -5,9 +5,11 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { ETypeProps } from '../../@types/InputBaseProps';
+import { ESteps } from '../../@types/steps';
 import DynamicInput from '../../components/Inputs/DynamicInput';
 import TextInput from '../../components/Inputs/TextInput';
 import theme from '../../styles/theme';
+import NavigationButtons from '../Buttons/NavigationButtons';
 
 const schema = yup.object().shape({
   fullName: yup.string().required('Nome completo é obrigatório'),
@@ -60,7 +62,10 @@ const extra_questions = [
   },
 ];
 
-const DeliveryRecipientForm: React.FC = () => {
+interface DeliveryRecipientFormProps {
+  navigateToStep: (step: ESteps) => void;
+}
+const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateToStep }) => {
   const methodsForm = useForm({
     resolver: yupResolver(schema),
   });
@@ -180,6 +185,10 @@ const DeliveryRecipientForm: React.FC = () => {
             )
           })}
         </Grid>
+        <NavigationButtons
+          handleNextStep={() => navigateToStep(ESteps.RESGATE_CONFIRMATION)}
+          handlePrevStep={() => navigateToStep(ESteps.ITEMS)}
+        />
       </Box>
     </FormProvider>
   );
