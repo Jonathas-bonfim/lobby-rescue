@@ -1,61 +1,75 @@
-import { Box, Checkbox, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { ItemProps } from '../../@types/data';
+import { Box, Checkbox, Tooltip, Typography } from '@mui/material';
+import React from 'react';
+import { ItemRedeemPageProps } from '../../@types/reedemPages';
+import checkedIcon from '../../assets/icons/checkbox-checked.svg';
+import uncheckedIcon from '../../assets/icons/checkbox-unchecked.svg';
 import theme from '../../styles/theme';
 import { ItemContainer, SizeButton } from './styles';
 
-import checkedIcon from '../../assets/icons/checkbox-checked.svg';
-import uncheckedIcon from '../../assets/icons/checkbox-unchecked.svg';
+interface ItemProps extends ItemRedeemPageProps {
+  isSelected: boolean;
+  isSizeSelected?: boolean;
+  onItemSelect?: (isSelected: boolean) => void;
+  onSizeSelect?: (sizeId: string) => void;
+}
 
 const Item: React.FC<ItemProps> = ({
-  customer_product_id,
   name,
-  quantity,
   optional,
   image_url,
-  sizes_grid,
   sizes,
+  isSelected,
+  isSizeSelected,
+  onItemSelect,
+  onSizeSelect,
 }) => {
-
-  console.log('JB | Item ', {
-    customer_product_id,
-    name,
-    quantity,
-    optional,
-    image_url,
-    sizes_grid,
-  });
-
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [selectedSize, setSelectedSize] = React.useState<string | null>(null);
 
   const handleSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
+    if (onSizeSelect) {
+      onSizeSelect(sizeId);
+    }
   };
 
   const handleCheckboxChange = () => {
-    setIsSelected(!isSelected);
+    if (onItemSelect) {
+      onItemSelect(!isSelected);
+    }
   };
+
+
+  const isCheckboxDisabled = sizes?.length > 0 && !isSizeSelected;
 
   return (
     <ItemContainer>
-      <Checkbox
-        checked={isSelected}
-        onChange={handleCheckboxChange}
-        icon={<img src={uncheckedIcon} alt="Unchecked" />}
-        checkedIcon={<img src={checkedIcon} alt="Checked" />}
-        sx={{
-          position: 'absolute',
-          top: '1rem',
-          right: '1rem',
-          zIndex: 1,
-          padding: 0,
-          '& .MuiSvgIcon-root': {
-            width: '2rem',
-            height: '2rem',
-          },
-        }}
-      />
+      {optional && (
+        <Tooltip
+          title={isCheckboxDisabled ? "Selecione um tamanho antes" : ""}
+          placement="top"
+        >
+          <span style={{ display: 'inline-block' }}>
+            <Checkbox
+              checked={isSelected}
+              onChange={handleCheckboxChange}
+              icon={<img src={uncheckedIcon} alt="Unchecked" />}
+              checkedIcon={<img src={checkedIcon} alt="Checked" />}
+              disabled={isCheckboxDisabled}
+              sx={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                zIndex: 1,
+                padding: 0,
+                '& .MuiSvgIcon-root': {
+                  width: '2rem',
+                  height: '2rem',
+                },
+              }}
+            />
+          </span>
+        </Tooltip>
+      )}
 
       <Box
         component="img"
@@ -84,7 +98,7 @@ const Item: React.FC<ItemProps> = ({
         {name}
       </Typography>
 
-      {sizes.length > 0 && (
+      {sizes?.length > 0 && (
         <Box
           sx={{
             display: 'flex',
@@ -93,7 +107,7 @@ const Item: React.FC<ItemProps> = ({
           }}
         >
           {sizes.map((size) =>
-            size.id.length && size?.name?.length ? (
+            size?.id?.length && size?.name?.length ? (
               <SizeButton
                 key={size.id}
                 selected={selectedSize === size.id}

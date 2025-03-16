@@ -1,9 +1,16 @@
 import { Box, Container, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { RedeemPageProps } from '../../@types/reedemPages';
+import { getRedeemPage } from '../../api/api';
 import theme from '../../styles/theme';
-import { dataAPI } from '../../utils/Mock/dataApi';
 
 const Welcome: React.FC = () => {
+  const { data: redeemPageProps } = useQuery<RedeemPageProps>({
+    queryKey: ['redeemPages'],
+    queryFn: getRedeemPage,
+  });
+
   return (
     <Container
       sx={{
@@ -19,7 +26,7 @@ const Welcome: React.FC = () => {
     >
       <Box
         component="img"
-        src={dataAPI.logo_url}
+        src={redeemPageProps?.logo_url}
         alt="Logo da empresa"
         sx={{
           width: '100%',
@@ -42,7 +49,7 @@ const Welcome: React.FC = () => {
             marginBottom: '1.125rem',
           }}
         >
-          {dataAPI.title}
+          {redeemPageProps?.title}
         </Typography>
         <Typography
           sx={{
@@ -50,7 +57,7 @@ const Welcome: React.FC = () => {
             color: theme.palette.custom.gray1,
           }}
         >
-          {dataAPI.welcome_title}
+          {redeemPageProps?.welcome_title}
         </Typography>
         <Typography
           sx={{
@@ -58,7 +65,7 @@ const Welcome: React.FC = () => {
             color: theme.palette.custom.gray1,
           }}
         >
-          {dataAPI.welcome_phrase}
+          {redeemPageProps?.welcome_phrase}
         </Typography>
       </Box>
     </Container>

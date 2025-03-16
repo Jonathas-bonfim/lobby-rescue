@@ -120,19 +120,19 @@ export const dataAPI: OnboardingDataProps = {
       position: 4,
       options: [],
     },
-    {
-      id: 385,
-      answer_type: "select_one",
-      question: "Você já participou de algum evento?",
-      position: 3,
-      options: ["Sim", "Não"],
-    },
-    {
-      id: 386,
-      answer_type: "date",
-      question: "Data de nascimento",
-      position: 2,
-      options: [],
-    },
+    // {
+    //   id: 385,
+    //   answer_type: "select_one",
+    //   question: "Você já participou de algum evento?",
+    //   position: 3,
+    //   options: ["Sim", "Não"],
+    // },
+    // {
+    //   id: 386,
+    //   answer_type: "date",
+    //   question: "Data de nascimento",
+    //   position: 2,
+    //   options: [],
+    // },
   ],
 };

@@ -167,7 +167,6 @@ const DeliveryRecipientForm: React.FC = () => {
             </Typography>
           </Grid>
           {extra_questions.map((question) => {
-            console.log('JB | question.answer_type:', question.answer_type);
             const normalizedAnswerType = question.answer_type.toUpperCase() as keyof typeof ETypeProps;
             return (
               <Grid key={question.id} size={{ lg: 6, md: 12 }}>
@@ -176,8 +175,6 @@ const DeliveryRecipientForm: React.FC = () => {
                   name={`extra_question_${question.id}`}
                   label={question.question}
                   options={question.options}
-                // getOptionLabel={(option) => option.label} // Se for um objeto com propriedade `label`
-                // getOptionValue={(option) => option.value} // Se for um objeto com propriedade `value`
                 />
               </Grid>
             )

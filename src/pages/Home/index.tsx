@@ -1,75 +1,48 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Container } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, CircularProgress, Container } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form'; // Importe o FormProvider
+import { RedeemPageProps } from '../../@types/reedemPages';
+import { getRedeemPage } from '../../api/api';
+import PrimaryButton from '../../components/Buttons/PrimaryButton';
+import SecondaryButton from '../../components/Buttons/SecondaryButton';
 import DeliveryRecipientForm from '../../components/DeliveryRecipientForm';
 import Footer from '../../components/Footer';
 import Items from '../../components/Items';
+import NotFound from '../../components/NotFound';
 import ResgateConfirmation from '../../components/ResgateConfirmation';
+import Welcome from '../../components/Welcome';
 import theme from '../../styles/theme';
 import { dataAPI } from '../../utils/Mock/dataApi';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import PrimaryButton from '../../components/Buttons/PrimaryButton';
-import SecondaryButton from '../../components/Buttons/SecondaryButton';
-import Welcome from '../../components/Welcome';
-// Defina os schemas de validação para cada step
-const itemsSchema = yup.object().shape({
-  itemName: yup.string().required('O nome do item é obrigatório'),
-  // Adicione mais campos conforme necessário
-});
-
-const deliveryRecipientSchema = yup.object().shape({
-  recipientName: yup.string().required('O nome do destinatário é obrigatório'),
-  // Adicione mais campos conforme necessário
-});
-
-const resgateConfirmationSchema = yup.object().shape({
-  confirmation: yup.boolean().oneOf([true], 'A confirmação é obrigatória'),
-  // Adicione mais campos conforme necessário
-});
 
 const Home = () => {
   const [step, setStep] = useState(1);
 
-  // Configuração do react-hook-form
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    trigger, // Para validar o formulário antes de avançar
-  } = useForm<any>({
-    resolver: yupResolver(
-      step === 1 ? itemsSchema :
-        step === 2 ? deliveryRecipientSchema :
-          resgateConfirmationSchema
-    ),
-    mode: 'onChange', // Validação em tempo real
+  const methods = useForm({
+    mode: 'onChange',
   });
 
+  const { handleSubmit, trigger } = methods;
+
   const handleNext = async () => {
-    // const isStepValid = await trigger(); // Valida o formulário atual
-    // if (isStepValid) {
-    //   setStep((prevStep) => prevStep + 1);
-    // }
-    setStep((prevStep) => prevStep + 1);
+    const isStepValid = await trigger();
+    if (isStepValid) {
+      setStep((prevStep) => prevStep + 1);
+    }
   };
 
-  // Função para voltar ao step anterior
   const handleBack = () => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  // Função para enviar o formulário final
-  const onSubmit = (data: any) => {
-    console.log('Dados do formulário:', data);
-    alert('Formulário enviado com sucesso!');
+  const onSubmit = (data) => {
+
   };
 
-  useEffect(() => {
-    console.log('JB | Step ', { step });
-  }, [step])
+  const { data: redeemPageProps, isLoading } = useQuery<RedeemPageProps>({
+    queryKey: ['redeemPages'],
+    queryFn: getRedeemPage,
+  });
 
   return (
     <Box
@@ -85,86 +58,70 @@ const Home = () => {
         boxSizing: 'border-box',
       }}
     >
-      <Container
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flex: 1,
-          width: '100%',
-          textAlign: 'center',
-          backgroundColor: theme.palette.custom.white,
-          borderRadius: '1.125rem',
-          paddingBottom: '6rem',
-        }}
-      >
+      {isLoading ? (
+        <CircularProgress color="primary" />
+      ) : (
         <>
-          {/* {
-          step === 1 &&
-          <Items />
-        }
-        {
-          step === 2 &&
-          <DeliveryRecipientForm />
-        }
-        {
-          step === 3 &&
-          <ResgateConfirmation />
-        }
-        <NotFound /> */}
-        </>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* {step === 0 && <Items control={control} errors={errors} />}
-          {step === 1 && <DeliveryRecipientForm control={control} errors={errors} />}
-          {step === 2 && <ResgateConfirmation control={control} errors={errors} />} */}
-          {step === 1 && <Welcome />}
-          {step === 2 && <Items />}
-          {step === 3 && <DeliveryRecipientForm />}
-          {step === 4 && <ResgateConfirmation />}
+          <Container
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              width: '100%',
+              textAlign: 'center',
+              backgroundColor: theme.palette.custom.white,
+              borderRadius: '1.125rem',
+              paddingBottom: '6rem',
+            }}
+          >
+            {redeemPageProps?.status === 'ACTIVE' ? (
+              <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {step === 1 && <Welcome />}
+                  {step === 2 && <Items />}
+                  {step === 3 && <DeliveryRecipientForm />}
+                  {step === 4 && <ResgateConfirmation />}
 
-          {
-            step === 1 ? (
-              <PrimaryButton variant="contained" onClick={() => setStep(2)}>
-                Começar!
-              </PrimaryButton>
+                  {step === 1 ? (
+                    <PrimaryButton variant="contained" sx={{ marginTop: '2.5rem' }} onClick={handleNext}>
+                      Começar!
+                    </PrimaryButton>
+                  ) : (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '2.5rem' }}>
+                      {step > 1 && step !== 4 && (
+                        <SecondaryButton variant="contained" onClick={handleBack}>
+                          Voltar
+                        </SecondaryButton>
+                      )}
+                      {step < 4 && (
+                        <PrimaryButton variant="contained" onClick={handleNext}>
+                          Continuar
+                        </PrimaryButton>
+                      )}
+                    </Box>
+                  )}
+                </form>
+              </FormProvider>
             ) : (
-
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                {step > 1 && step !== 4 && (
-                  <SecondaryButton variant="contained" onClick={handleBack}>
-                    Voltar
-                  </SecondaryButton>
-                )}
-                {step < 4 && (
-                  <PrimaryButton variant="contained" onClick={handleNext}>
-                    Continuar
-                  </PrimaryButton>
-                )}
-              </Box>
-            )
-          }
-          {
-            step === 4 && (
-              <PrimaryButton variant="contained" onClick={() => setStep(1)}>
-                Página inicial!
-              </PrimaryButton>
-            )
-          }
-        </form>
-      </Container>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          position: 'relative',
-          bottom: 0,
-        }}
-      >
-        <Footer />
-      </Box>
+              <NotFound />
+            )}
+          </Container>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              position: 'relative',
+              bottom: 0,
+            }}
+          >
+            <Footer />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
