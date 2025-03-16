@@ -1,13 +1,19 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ItemRedeemCreationProps } from '../../@types/redeemForm';
 import { RedeemPageProps } from '../../@types/reedemPages';
+import { ESteps } from '../../@types/steps';
 import { getRedeemPage } from '../../api/api';
+import NavigationButtons from '../Buttons/NavigationButtons';
 import Item from '../Item';
 
-const Items: React.FC = () => {
+interface ItemsProps {
+  navigateToStep: (step: ESteps) => void; // Adicionando a prop navigateToStep
+}
+
+const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
   const { data: redeemPageProps = { items: [] } } = useQuery<RedeemPageProps>({
     queryKey: ['redeemPages'],
     queryFn: getRedeemPage,
@@ -47,8 +53,10 @@ const Items: React.FC = () => {
 
   const handleConfirmSelection = useCallback(() => {
     setValue('selectedItems', tempSelectedItems);
-    console.log('Itens selecionados:', tempSelectedItems, redeemPageProps);
-  }, [tempSelectedItems, setValue, redeemPageProps]);
+    console.log('Itens selecionados:', tempSelectedItems);
+
+    navigateToStep(ESteps.DELIVERY_RECIPIENT);
+  }, [tempSelectedItems, setValue, navigateToStep]);
 
   return (
     <Container>
@@ -73,6 +81,7 @@ const Items: React.FC = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
           gap: '2rem',
+          marginBottom: '2.5rem'
         }}
       >
         {redeemPageProps?.items.map((item) => (
@@ -94,12 +103,10 @@ const Items: React.FC = () => {
           />
         ))}
       </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-        <Button variant="contained" color="primary" onClick={handleConfirmSelection}>
-          Confirmar Seleção
-        </Button>
-      </Box>
+      <NavigationButtons
+        handleNextStep={handleConfirmSelection}
+        handlePrevStep={() => navigateToStep(ESteps.WELCOME)}
+      />
     </Container>
   );
 };

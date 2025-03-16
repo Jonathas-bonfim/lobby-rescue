@@ -1,11 +1,10 @@
 import { Box, CircularProgress, Container } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form'; // Importe o FormProvider
+import React, { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { RedeemPageProps } from '../../@types/reedemPages';
+import { ESteps } from '../../@types/steps';
 import { getRedeemPage } from '../../api/api';
-import PrimaryButton from '../../components/Buttons/PrimaryButton';
-import SecondaryButton from '../../components/Buttons/SecondaryButton';
 import DeliveryRecipientForm from '../../components/DeliveryRecipientForm';
 import Footer from '../../components/Footer';
 import Items from '../../components/Items';
@@ -16,27 +15,27 @@ import theme from '../../styles/theme';
 import { dataAPI } from '../../utils/Mock/dataApi';
 
 const Home = () => {
-  const [step, setStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.WELCOME);
 
   const methods = useForm({
     mode: 'onChange',
   });
 
-  const { handleSubmit, trigger } = methods;
+  const { handleSubmit } = methods;
 
-  const handleNext = async () => {
-    const isStepValid = await trigger();
-    if (isStepValid) {
-      setStep((prevStep) => prevStep + 1);
-    }
+  const navigateToStep = (step: ESteps) => {
+    setCurrentStep(step);
   };
 
-  const handleBack = () => {
-    setStep((prevStep) => prevStep - 1);
+  const onSubmit = () => {
+    console.log('Dados do formulário:');
   };
 
-  const onSubmit = (data) => {
-
+  const stepComponents = {
+    [ESteps.WELCOME]: <Welcome navigateToStep={navigateToStep} />,
+    [ESteps.ITEMS]: <Items navigateToStep={navigateToStep} />,
+    [ESteps.DELIVERY_RECIPIENT]: <DeliveryRecipientForm />,
+    [ESteps.RESGATE_CONFIRMATION]: <ResgateConfirmation />,
   };
 
   const { data: redeemPageProps, isLoading } = useQuery<RedeemPageProps>({
@@ -79,29 +78,8 @@ const Home = () => {
             {redeemPageProps?.status === 'ACTIVE' ? (
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {step === 1 && <Welcome />}
-                  {step === 2 && <Items />}
-                  {step === 3 && <DeliveryRecipientForm />}
-                  {step === 4 && <ResgateConfirmation />}
-
-                  {step === 1 ? (
-                    <PrimaryButton variant="contained" sx={{ marginTop: '2.5rem' }} onClick={handleNext}>
-                      Começar!
-                    </PrimaryButton>
-                  ) : (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '2.5rem' }}>
-                      {step > 1 && step !== 4 && (
-                        <SecondaryButton variant="contained" onClick={handleBack}>
-                          Voltar
-                        </SecondaryButton>
-                      )}
-                      {step < 4 && (
-                        <PrimaryButton variant="contained" onClick={handleNext}>
-                          Continuar
-                        </PrimaryButton>
-                      )}
-                    </Box>
-                  )}
+                  {/* Renderiza o componente do step atual e passa a função de navegação */}
+                  {React.cloneElement(stepComponents[currentStep], { navigateToStep })}
                 </form>
               </FormProvider>
             ) : (
