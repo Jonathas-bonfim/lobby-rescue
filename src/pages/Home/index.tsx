@@ -5,12 +5,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { RedeemPageProps } from '../../@types/reedemPages';
 import { ESteps } from '../../@types/steps';
 import { getRedeemPage } from '../../api/api';
-import DeliveryRecipientForm from '../../components/DeliveryRecipientForm';
 import Footer from '../../components/Footer';
-import Items from '../../components/Items';
 import NotFound from '../../components/NotFound';
-import ResgateConfirmation from '../../components/ResgateConfirmation';
-import Welcome from '../../components/Welcome';
+import DeliveryRecipientForm from '../../components/Steps/DeliveryRecipientForm';
+import Items from '../../components/Steps/Items';
+import ResgateConfirmation from '../../components/Steps/ResgateConfirmation';
+import Welcome from '../../components/Steps/Welcome';
 import theme from '../../styles/theme';
 import { dataAPI } from '../../utils/Mock/dataApi';
 

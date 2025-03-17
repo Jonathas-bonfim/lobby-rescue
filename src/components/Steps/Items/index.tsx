@@ -2,13 +2,13 @@ import { Box, Container, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { ItemRedeemCreationProps } from '../../@types/redeemForm';
-import { RedeemPageProps } from '../../@types/reedemPages';
-import { ESteps } from '../../@types/steps';
-import { getRedeemPage } from '../../api/api';
-import NavigationButtons from '../Buttons/NavigationButtons';
-import Item from '../Item';
-import { useSnackbar } from '../Snackbar';
+import { ItemRedeemCreationProps } from '../../../@types/redeemForm';
+import { RedeemPageProps } from '../../../@types/reedemPages';
+import { ESteps } from '../../../@types/steps';
+import { getRedeemPage } from '../../../api/api';
+import NavigationButtons from '../../Buttons/NavigationButtons';
+import Item from '../../Item';
+import { useSnackbar } from '../../Snackbar';
 
 interface ItemsProps {
   navigateToStep: (step: ESteps) => void;

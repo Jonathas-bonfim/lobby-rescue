@@ -1,34 +1,32 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { ETypeProps } from '../../@types/InputBaseProps';
-import { ESteps } from '../../@types/steps';
-import DynamicInput from '../../components/Inputs/DynamicInput';
-import TextInput from '../../components/Inputs/TextInput';
-import theme from '../../styles/theme';
-import NavigationButtons from '../Buttons/NavigationButtons';
+import { ETypeProps } from '../../../@types/InputBaseProps';
+import { ESteps } from '../../../@types/steps';
+import theme from '../../../styles/theme';
+import { StatesMock } from '../../../utils/Mock/States';
+import NavigationButtons from '../../Buttons/NavigationButtons';
+import DynamicInput from '../../Inputs/DynamicInput';
+import SelectInput from '../../Inputs/SelectInput';
+import TextInput from '../../Inputs/TextInput';
+import { useSnackbar } from '../../Snackbar';
 
-const schema = yup.object().shape({
-  fullName: yup.string().required('Nome completo é obrigatório'),
-  cpfCnpj: yup
-    .string()
-    .required('CPF ou CNPJ é obrigatório')
-    .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CPF ou CNPJ inválido'),
-  cep: yup
-    .string()
-    .required('CEP é obrigatório')
-    .matches(/^\d{5}-\d{3}$/, 'CEP inválido'),
-  street: yup.string().required('Rua é obrigatória'),
-  number: yup.string().required('Número é obrigatório'),
-  complement: yup.string(),
-  neighborhood: yup.string().required('Bairro é obrigatório'),
-  city: yup.string().required('Cidade é obrigatória'),
-  state: yup.string().required('Estado é obrigatório'),
-  country: yup.string().required('País é obrigatório'),
-  email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
+// Esquema de validação Yup com os nomes dos campos atualizados
+const deliveryRecipientSchema = yup.object().shape({
+  redeemer_name: yup.string().required('O nome é obrigatório').max(50, 'O nome pode conter no máximo 50 caracteres'),
+  redeemer_email: yup.string().email('E-mail inválido').required('O e-mail é obrigatório').max(50, 'O email pode ter no máximo 50 caracteres'),
+  redeemer_phone: yup.string().required('O telefone é obrigatório').max(11, 'O telefone pode conter no máximo 11 caracteres'),
+  redeemer_zipcode: yup.string().required('O CEP é obrigatório').max(8, 'O CEP pode conter no máximo 8 caracteres'),
+  redeemer_street: yup.string().required('A rua é obrigatória').max(50, 'A rua pode conter no máximo 50 caracteres'),
+  redeemer_number: yup.string().required('O número é obrigatório').max(12, 'O número pode conter no máximo 12 caracteres'),
+  redeemer_complement: yup.string().max(60, 'O Complemento pode conter no máximo 60 caracteres'),
+  redeemer_neighborhood: yup.string().required('O bairro é obrigatório').max(30, 'O bairro pode conter no máximo 30 caracteres'),
+  redeemer_city: yup.string().required('A cidade é obrigatória').max(60, 'A cidade pode conter no máximo 60 caracteres'),
+  redeemer_state: yup.string().required('O estado é obrigatório'),
+  redeemer_country: yup.string().required('O país é obrigatório'),
 });
 
 const extra_questions = [
@@ -65,18 +63,31 @@ const extra_questions = [
 interface DeliveryRecipientFormProps {
   navigateToStep: (step: ESteps) => void;
 }
+
 const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateToStep }) => {
   const methodsForm = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(deliveryRecipientSchema),
   });
 
-  const {
-    handleSubmit
-  } = methodsForm
+  const { handleSubmit, formState: { errors } } = methodsForm;
+  const { showSnackbar } = useSnackbar();
 
   const onSubmit = (data: unknown) => {
     console.log('Dados do destinatário:', data);
+    navigateToStep(ESteps.RESGATE_CONFIRMATION);
   };
+
+  const handleNext = () => {
+    if (Object.keys(errors).length > 0) {
+      showSnackbar('Por favor, preencha todos os campos obrigatórios.', 'error');
+      return;
+    }
+    handleSubmit(onSubmit)();
+  };
+
+  useEffect(() => {
+    console.log('JB | Errors ', { errors });
+  }, [errors]);
 
   return (
     <FormProvider {...methodsForm}>
@@ -113,13 +124,13 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
             </Typography>
           </Grid>
           <Grid size={12}>
-            <TextInput name="fullName" label="Nome completo" />
+            <TextInput name="redeemer_name" label="Nome completo" />
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="cpfCnpj" label="CPF ou CNPJ" />
+            <TextInput name="redeemer_email" label="E-mail" />
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="email" label="E-mail" />
+            <TextInput name="redeemer_phone" label="Telefone" />
           </Grid>
         </Grid>
 
@@ -135,28 +146,28 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
             </Typography>
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="cep" label="CEP" />
+            <TextInput name="redeemer_zipcode" label="CEP" />
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="street" label="Rua" />
+            <TextInput name="redeemer_street" label="Rua" />
           </Grid>
           <Grid size={{ lg: 3, md: 6 }}>
-            <TextInput name="number" label="Número" />
+            <TextInput name="redeemer_number" label="Número" />
           </Grid>
           <Grid size={{ lg: 3, md: 6 }}>
-            <TextInput name="complement" label="Complemento" />
+            <TextInput name="redeemer_complement" label="Complemento" />
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="neighborhood" label="Bairro" />
+            <TextInput name="redeemer_neighborhood" label="Bairro" />
           </Grid>
           <Grid size={{ lg: 6, md: 12 }}>
-            <TextInput name="city" label="Cidade" />
+            <TextInput name="redeemer_city" label="Cidade" />
           </Grid>
           <Grid size={{ lg: 3, md: 6 }}>
-            <TextInput name="state" label="Estado" />
+            <SelectInput options={StatesMock} name="redeemer_state" label="Estado" />
           </Grid>
           <Grid size={{ lg: 3, md: 6 }}>
-            <TextInput name="country" label="País" />
+            <TextInput name="redeemer_country" label="País" />
           </Grid>
         </Grid>
 
@@ -177,16 +188,17 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
               <Grid key={question.id} size={{ lg: 6, md: 12 }}>
                 <DynamicInput
                   type={ETypeProps[normalizedAnswerType]}
-                  name={`extra_question_${question.id}`}
+                  name={`extra_question_responses[${question.id}].answer`} // Nome do campo atualizado
                   label={question.question}
                   options={question.options}
                 />
               </Grid>
-            )
+            );
           })}
         </Grid>
+
         <NavigationButtons
-          handleNextStep={() => navigateToStep(ESteps.RESGATE_CONFIRMATION)}
+          handleNextStep={handleNext}
           handlePrevStep={() => navigateToStep(ESteps.ITEMS)}
         />
       </Box>

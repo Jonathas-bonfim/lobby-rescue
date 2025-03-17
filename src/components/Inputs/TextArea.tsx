@@ -8,7 +8,7 @@ interface TextAreaProps extends Omit<TextFieldProps, 'name' | 'error' | 'helperT
   rows?: number;
 }
 
-const TextArea: React.FC<TextAreaProps> = ({ name, rows = 4, ...rest }) => {
+const TextArea: React.FC<TextAreaProps> = ({ name, rows = 1, ...rest }) => {
   const { control, formState: { errors } } = useFormContext();
 
   return (

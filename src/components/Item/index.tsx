@@ -4,7 +4,7 @@ import { ItemRedeemPageProps } from '../../@types/reedemPages';
 import checkedIcon from '../../assets/icons/checkbox-checked.svg';
 import uncheckedIcon from '../../assets/icons/checkbox-unchecked.svg';
 import theme from '../../styles/theme';
-import { useSnackbar } from '../Snackbar'; // Importe o useSnackbar
+import { useSnackbar } from '../Snackbar';
 import { ItemContainer, SizeButton } from './styles';
 
 interface ItemProps extends ItemRedeemPageProps {

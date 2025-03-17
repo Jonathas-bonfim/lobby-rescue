@@ -1,11 +1,11 @@
 import { Box, Container, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { RedeemPageProps } from '../../@types/reedemPages';
-import { ESteps } from '../../@types/steps';
-import { getRedeemPage } from '../../api/api';
-import theme from '../../styles/theme';
-import PrimaryButton from '../Buttons/PrimaryButton';
+import { RedeemPageProps } from '../../../@types/reedemPages';
+import { ESteps } from '../../../@types/steps';
+import { getRedeemPage } from '../../../api/api';
+import theme from '../../../styles/theme';
+import PrimaryButton from '../../Buttons/PrimaryButton';
 
 interface WelcomeProps {
   navigateToStep: (step: ESteps) => void;

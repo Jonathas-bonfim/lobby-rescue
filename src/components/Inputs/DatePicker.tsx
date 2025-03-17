@@ -1,6 +1,7 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import theme from '../../styles/theme';
 
 interface CustomDatePickerProps {
   name: string;
@@ -29,6 +30,40 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ name, label }) => {
               helperText: errors[name]?.message as string,
               onBlur: field.onBlur,
               variant: 'standard',
+              sx: {
+                '& .MuiInputLabel-root': {
+                  fontWeight: 400,
+                  fontSize: '0.75rem',
+                  lineHeight: '100%',
+                  letterSpacing: '0%',
+                  color: theme.palette.custom.gray2,
+                  verticalAlign: 'bottom',
+                  marginBottom: '4px',
+                },
+                '& .MuiInputBase-input': {
+                  fontWeight: 400,
+                  fontSize: '0.75rem',
+                  lineHeight: '100%',
+                  letterSpacing: '0%',
+                  color: theme.palette.custom.black,
+                  verticalAlign: 'bottom',
+                  textAlign: 'left',
+                },
+                '& .MuiInput-underline:before': {
+                  borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+                },
+                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                  borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+                },
+                // Remove o efeito de foco (borda e cor)
+                '& .Mui-focused': {
+                  borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+                  color: theme.palette.custom.black, // Mantém a cor do texto
+                },
+              },
             },
           }}
         />

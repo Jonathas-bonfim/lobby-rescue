@@ -1,10 +1,15 @@
-import CelebrationIcon from "@mui/icons-material/Celebration"
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt"
-import { Box, Container, Paper, Typography } from "@mui/material"
-
-import lobbyImage from '../../assets/images/lobby-logo.png'
+import CelebrationIcon from "@mui/icons-material/Celebration";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import { Box, Container, Paper, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { RedeemPageProps } from "../../../@types/reedemPages";
+import { getRedeemPage } from "../../../api/api";
 
 const ResgateConfirmation: React.FC = () => {
+  const { data: redeemPageProps } = useQuery<RedeemPageProps>({
+    queryKey: ['redeemPages'],
+    queryFn: getRedeemPage,
+  });
   return (
     <Box
       sx={{
@@ -26,7 +31,7 @@ const ResgateConfirmation: React.FC = () => {
         >
           <Box
             component="img"
-            src={lobbyImage}
+            src={redeemPageProps?.logo_url ?? ''}
             sx={{
               maxWidth: '12rem',
               width: '100%',

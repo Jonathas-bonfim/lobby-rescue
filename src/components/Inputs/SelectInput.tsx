@@ -28,11 +28,12 @@ const SelectInput = <T,>({
       render={({ field }) => (
         <FormControl fullWidth error={!!errors[name]}>
           <InputLabel sx={{
-            fontWeight: 600,
-            fontSize: '16px',
+            fontWeight: 400,
+            fontSize: '0.75rem',
             lineHeight: '100%',
             letterSpacing: '0%',
-            color: theme.palette.custom.black,
+            color: theme.palette.custom.gray2,
+            verticalAlign: 'bottom',
             marginBottom: '4px',
             marginLeft: '-15px'
           }}>
@@ -41,37 +42,59 @@ const SelectInput = <T,>({
           <Select
             {...field}
             label={label}
-            variant="standard" // Usamos a variante "standard" para facilitar a estilização da borda inferior
+            variant="standard"
             sx={{
-              width: '444px',
-              height: '46px',
-              paddingBottom: '4px',
-              gap: '4px',
-              '& .MuiSelect-select': {
-                fontWeight: 600,
-                fontSize: '16px',
+              '& .MuiInputLabel-root': {
+                fontWeight: 400,
+                fontSize: '0.75rem',
+                lineHeight: '100%',
+                letterSpacing: '0%',
+                color: theme.palette.custom.gray2,
+                verticalAlign: 'bottom',
+              },
+              '& .MuiInputBase-input': {
+                fontWeight: 400,
+                fontSize: '0.75rem',
+                lineHeight: '100%',
                 letterSpacing: '0%',
                 color: theme.palette.custom.black,
-                textAlign: 'left',
+                verticalAlign: 'bottom',
+                textAlign: 'left', // Alinha o texto à esquerda
               },
-              '& .MuiInputBase-root': {
-                borderBottom: `0.5px solid ${theme.palette.custom.gray3}`, // Apenas borda inferior
-              },
+              // Remove a borda inferior padrão
               '& .MuiInput-underline:before': {
-                borderBottom: 'none', // Remove a borda inferior padrão
+                borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
               },
+              // Remove a borda inferior ao focar
               '& .MuiInput-underline:after': {
-                borderBottom: 'none', // Remove a borda inferior após o foco
+                borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
               },
+              // Remove a borda inferior ao passar o mouse
               '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                borderBottom: 'none', // Remove a borda inferior no hover
+                borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+              },
+              // Estilo específico para o texto do Select
+              '& .MuiSelect-select': {
+                textAlign: 'left', // Alinha o texto à esquerda
+              },
+              // Remove o efeito de foco (borda e cor)
+              '& .Mui-focused': {
+                borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
+                color: theme.palette.custom.black, // Mantém a cor do texto
+              },
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  width: 'auto',
+                  maxHeight: '200px',
+                },
               },
             }}
           >
             {options.map((option, index) => (
               <MenuItem key={index} value={getOptionValue(option)} sx={{
-                textAlign: 'left', // Alinha o texto dos itens à esquerda
-                // marginLeft: '-12px'
+                textAlign: 'left', // Alinha o texto dos itens do Menu à esquerda
               }}>
                 {getOptionLabel(option)}
               </MenuItem>

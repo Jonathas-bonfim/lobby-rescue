@@ -1,5 +1,5 @@
 export interface RedeemPagesProps {
-  redeem_pages: RedeemPageProps[]; // A estrutura esperada da API
+  redeem_pages: RedeemPageProps[];
 }
 
 export interface RedeemPageProps {
