@@ -33,7 +33,7 @@ const TextArea: React.FC<TextAreaProps> = ({ name, rows = 1, ...rest }) => {
           sx={{
             '& .MuiInputLabel-root': {
               fontWeight: 400,
-              fontSize: '12px',
+              fontSize: '0.75rem',
               lineHeight: '100%',
               letterSpacing: '0%',
               color: theme.palette.custom.gray2,
@@ -41,7 +41,7 @@ const TextArea: React.FC<TextAreaProps> = ({ name, rows = 1, ...rest }) => {
             },
             '& .MuiInputBase-input': {
               fontWeight: 400,
-              fontSize: '16px',
+              fontSize: '0.75rem',
               lineHeight: '100%',
               letterSpacing: '0%',
               color: theme.palette.custom.black,

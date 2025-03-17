@@ -12,12 +12,12 @@ import Items from '../../components/Steps/Items';
 import ResgateConfirmation from '../../components/Steps/ResgateConfirmation';
 import Welcome from '../../components/Steps/Welcome';
 import theme from '../../styles/theme';
-import { dataAPI } from '../../utils/Mock/dataApi';
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.WELCOME);
 
   const methods = useForm({
+    reValidateMode: 'onChange',
     mode: 'onChange',
   });
 
@@ -27,9 +27,7 @@ const Home = () => {
     setCurrentStep(step);
   };
 
-  const onSubmit = () => {
-    console.log('Dados do formulário:');
-  };
+  const onSubmit = () => { };
 
   const stepComponents = {
     [ESteps.WELCOME]: <Welcome navigateToStep={navigateToStep} />,
@@ -52,7 +50,7 @@ const Home = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: dataAPI.background_color ?? theme.palette.custom.backgroundBlue,
+        backgroundColor: redeemPageProps?.background_color ?? theme.palette.custom.backgroundBlue,
         padding: '100px 115.5px',
         boxSizing: 'border-box',
       }}

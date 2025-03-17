@@ -3,8 +3,7 @@ import { RedeemPageProps, RedeemPagesProps } from "../@types/reedemPages";
 const api = axios.create({
   baseURL: "https://server.lobby.tech/api/v1",
   headers: {
-    Authorization:
-      "Basic YV9nNUFxWGJoUXlTUjUwd2tYTVF5Y21uVWItcFE3ODNkTFMxRjd5TjZnWTo=",
+    Authorization: import.meta.env.VITE_API_KEY,
     accept: "application/json",
   },
 });
