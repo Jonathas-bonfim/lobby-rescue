@@ -94,7 +94,7 @@ const Items: React.FC<ItemsProps> = ({ navigateToStep }) => {
       return;
     }
 
-    setValue('selectedItems', tempSelectedItems);
+    setValue('items', tempSelectedItems);
     navigateToStep(ESteps.DELIVERY_RECIPIENT);
   }, [tempSelectedItems, setValue, navigateToStep, redeemPageProps.items, showSnackbar]);
 

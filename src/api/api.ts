@@ -1,4 +1,5 @@
 import axios from "axios";
+import { RedeemCreationProps } from "../@types/redeemForm";
 import { RedeemPageProps, RedeemPagesProps } from "../@types/reedemPages";
 const api = axios.create({
   baseURL: "https://server.lobby.tech/api/v1",
@@ -15,12 +16,15 @@ export const getRedeemPages = async (): Promise<RedeemPagesProps> => {
 
 export const getRedeemPage = async (): Promise<RedeemPageProps> => {
   const response = await api.get(
-    "/redeem_pages/32ccf6f1-4f6e-417f-9fab-565db052dc15"
+    `/redeem_pages/${import.meta.env.VITE_API_PAGE_ID}`
   );
   return response.data;
 };
 
-export const createRedeem = async (data: RedeemPageProps) => {
-  const response = await api.post("/redeems", data);
+export const createRedeem = async (data: RedeemCreationProps) => {
+  const response = await api.post(
+    `redeem_pages/${import.meta.env.VITE_API_PAGE_ID}/redeem`,
+    data
+  );
   return response?.data;
 };

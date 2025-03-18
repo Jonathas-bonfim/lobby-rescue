@@ -14,10 +14,6 @@ export const deliveryRecipientSchema = yup.object().shape({
     .email("E-mail inválido")
     .required("O e-mail é obrigatório")
     .max(50, "O email pode ter no máximo 50 caracteres"),
-  redeemer_phone: yup
-    .string()
-    .required("O telefone é obrigatório")
-    .max(11, "O telefone pode conter no máximo 11 caracteres"),
   redeemer_zipcode: yup
     .string()
     .required("O CEP é obrigatório")

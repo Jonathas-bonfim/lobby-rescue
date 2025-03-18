@@ -12,11 +12,12 @@ import Items from '../../components/Steps/Items';
 import ResgateConfirmation from '../../components/Steps/ResgateConfirmation';
 import Welcome from '../../components/Steps/Welcome';
 import theme from '../../styles/theme';
+import { RedeemFormProps } from '../../validation';
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.WELCOME);
 
-  const methods = useForm({
+  const methods = useForm<RedeemFormProps>({
     reValidateMode: 'onChange',
     mode: 'onChange',
   });

@@ -114,11 +114,11 @@ const Item: React.FC<ItemProps> = ({
           {sizes.map((size) =>
             size?.id?.length && size?.name?.length ? (
               <SizeButton
-                key={size.id}
+                key={size?.id}
                 selected={selectedSize === size.id}
                 onClick={() => handleSizeSelect(size.id)}
               >
-                {size.name}
+                {size.name?.slice(0, 2)?.toUpperCase()}
               </SizeButton>
             ) : (
               <></>
