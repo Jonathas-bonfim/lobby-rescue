@@ -58,10 +58,9 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({ name, label }) => {
                 '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
                   borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
                 },
-                // Remove o efeito de foco (borda e cor)
                 '& .Mui-focused': {
                   borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
-                  color: theme.palette.custom.black, // Mantém a cor do texto
+                  color: theme.palette.custom.black,
                 },
               },
             },

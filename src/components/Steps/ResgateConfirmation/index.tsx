@@ -1,5 +1,3 @@
-import CelebrationIcon from "@mui/icons-material/Celebration";
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { RedeemPageProps } from "../../../@types/reedemPages";
@@ -41,21 +39,17 @@ const ResgateConfirmation: React.FC = () => {
               marginBottom: '1rem',
             }}
           />
-
           <Typography
             variant="h3"
             component="h1"
             sx={{
-              mb: 3,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: 1,
+              textAlign: 'center'
             }}
           >
-            Presente resgatado!
-            <CelebrationIcon sx={{ color: "#FFD54F", fontSize: 32 }} />
-            <SentimentSatisfiedAltIcon sx={{ color: "#FFB74D", fontSize: 32 }} />
+            Presente resgatado! 🎉🥳
           </Typography>
 
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 500, color: "#546E7A" }}>

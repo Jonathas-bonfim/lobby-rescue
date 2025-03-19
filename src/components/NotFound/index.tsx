@@ -70,7 +70,6 @@ const NotFound: React.FC = () => {
                 position: "relative",
               }}
             >
-              {/* Caranguejo com óculos escuros */}
               <Box
                 component="img"
                 src="/placeholder.svg?height=80&width=80"
@@ -81,7 +80,6 @@ const NotFound: React.FC = () => {
                 }}
               />
 
-              {/* Pontos de interrogação */}
               <Typography
                 sx={{
                   position: "absolute",

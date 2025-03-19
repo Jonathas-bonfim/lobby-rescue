@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ETypeProps } from '../../../@types/InputBaseProps';
 import { ExtraQuestionResponseRedeemCreationProps, RedeemCreationProps } from '../../../@types/redeemForm';
@@ -57,21 +57,16 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
 
   const handleNext = () => {
     if (Object.keys(errors).length > 0) {
-      console.log('JB | Errors ', { errors });
       showSnackbar('Por favor, preencha todos os campos obrigatórios.', 'error');
       return;
     }
     handleSubmit(onSubmit)();
   };
 
-  useEffect(() => {
-    console.log('JB | Errors ', { errors });
-  }, [errors]);
-
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)} // Corrigido aqui
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -104,10 +99,10 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
         <Grid size={12}>
           <TextInput name="redeemer_name" label="Nome completo" />
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_document_number" label="CPF ou CNPJ" placeholder='999.999.999-99' isDocument />
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_email" label="E-mail" />
         </Grid>
       </Grid>
@@ -123,28 +118,28 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
             Endereço de entrega
           </Typography>
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_zipcode" label="CEP" placeholder='99.999-999' isZipCode />
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_street" label="Rua" />
         </Grid>
-        <Grid size={{ lg: 3, md: 6 }}>
+        <Grid size={{ xs: 6, md: 3 }}>
           <TextInput name="redeemer_number" type='number' label="Número" />
         </Grid>
-        <Grid size={{ lg: 3, md: 6 }}>
+        <Grid size={{ xs: 6, md: 3 }}>
           <TextInput name="redeemer_complement" label="Complemento" />
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_neighborhood" label="Bairro" />
         </Grid>
-        <Grid size={{ lg: 6, md: 12 }}>
+        <Grid size={{ xs: 12, md: 6, }}>
           <TextInput name="redeemer_city" label="Cidade" />
         </Grid>
-        <Grid size={{ lg: 3, md: 6 }}>
+        <Grid size={{ xs: 6, md: 3 }}>
           <SelectInput options={StatesMock} name="redeemer_state" label="Estado" />
         </Grid>
-        <Grid size={{ lg: 3, md: 6 }}>
+        <Grid size={{ xs: 6, md: 3 }}>
           <SelectInput options={CountriesMock} name="redeemer_country" label="País" />
         </Grid>
       </Grid>
@@ -164,7 +159,7 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
           {redeemPageProps?.extra_questions?.map((question) => {
             const normalizedAnswerType = question.answer_type.toUpperCase() as keyof typeof ETypeProps;
             return (
-              <Grid key={question.id} size={{ lg: 6, md: 12 }}>
+              <Grid key={question.id} size={{ xs: 12, md: 6, }}>
                 <DynamicInput
                   type={ETypeProps[normalizedAnswerType]}
                   name={`extra_question_responses[${question.id}].answer`}

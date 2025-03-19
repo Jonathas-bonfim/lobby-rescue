@@ -59,28 +59,23 @@ const SelectInput = <T,>({
                 letterSpacing: '0%',
                 color: theme.palette.custom.black,
                 verticalAlign: 'bottom',
-                textAlign: 'left', // Alinha o texto à esquerda
+                textAlign: 'left',
               },
-              // Remove a borda inferior padrão
               '& .MuiInput-underline:before': {
                 borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
               },
-              // Remove a borda inferior ao focar
               '& .MuiInput-underline:after': {
                 borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
               },
-              // Remove a borda inferior ao passar o mouse
               '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
                 borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
               },
-              // Estilo específico para o texto do Select
               '& .MuiSelect-select': {
-                textAlign: 'left', // Alinha o texto à esquerda
+                textAlign: 'left',
               },
-              // Remove o efeito de foco (borda e cor)
               '& .Mui-focused': {
                 borderBottom: `0.5px solid ${theme.palette.custom.gray3}`,
-                color: theme.palette.custom.black, // Mantém a cor do texto
+                color: theme.palette.custom.black,
               },
             }}
             MenuProps={{
@@ -94,7 +89,7 @@ const SelectInput = <T,>({
           >
             {options.map((option, index) => (
               <MenuItem key={index} value={getOptionValue(option)} sx={{
-                textAlign: 'left', // Alinha o texto dos itens do Menu à esquerda
+                textAlign: 'left',
               }}>
                 {getOptionLabel(option)}
               </MenuItem>

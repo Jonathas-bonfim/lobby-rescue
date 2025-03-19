@@ -10,8 +10,8 @@ export const deliveryRecipientSchema = yup.object().shape({
     .transform((value) => value.replace(/\D/g, ""))
     .required("O CPF ou CNPJ é de preenchimento obrigatório")
     .test("cpf-cnpj-valid", "CPF ou CNPJ inválido", (value) => {
-      if (!value) return false; // Se o valor for vazio, retorna falso
-      return cpf.isValid(value) || cnpj.isValid(value); // Valida se é um CPF ou CNPJ válido
+      if (!value) return false;
+      return cpf.isValid(value) || cnpj.isValid(value);
     }),
   redeemer_name: yup
     .string()

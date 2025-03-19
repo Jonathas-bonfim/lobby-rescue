@@ -10,7 +10,7 @@ interface TextInputProps extends Omit<TextFieldProps, 'name' | 'error' | 'helper
   type?: 'number' | 'text';
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isZipCode?: boolean;
-  isDocument?: boolean; // Nova prop para identificar se o campo é CPF/CNPJ
+  isDocument?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({ name, type = 'text', onChange, isZipCode = false, isDocument = false, ...rest }) => {
@@ -26,15 +26,15 @@ const TextInput: React.FC<TextInputProps> = ({ name, type = 'text', onChange, is
           let value = event.target.value;
 
           if (isZipCode) {
-            value = handleZipCodeChange(event); // Aplica a formatação do CEP
+            value = handleZipCodeChange(event);
           } else if (isDocument) {
-            value = handleDocumentChange(event); // Aplica a formatação de CPF/CNPJ
+            value = handleDocumentChange(event);
           }
 
-          field.onChange(value); // Atualiza o valor no react-hook-form
+          field.onChange(value);
 
           if (onChange) {
-            onChange(event); // Chama a função onChange personalizada, se fornecida
+            onChange(event);
           }
         };
 

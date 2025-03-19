@@ -52,6 +52,9 @@ const Welcome: React.FC<WelcomeProps> = ({ navigateToStep }) => {
             fontSize: '2.5rem',
             color: theme.palette.custom.black,
             marginBottom: '1.125rem',
+            "@media (max-width: 750px)": {
+              fontSize: "2rem",
+            },
           }}
         >
           {redeemPageProps?.title}
@@ -60,6 +63,9 @@ const Welcome: React.FC<WelcomeProps> = ({ navigateToStep }) => {
           sx={{
             fontSize: '1.125rem',
             color: theme.palette.custom.gray1,
+            "@media (max-width: 750px)": {
+              marginBottom: "0.875rem",
+            },
           }}
         >
           {redeemPageProps?.welcome_title}
@@ -68,6 +74,9 @@ const Welcome: React.FC<WelcomeProps> = ({ navigateToStep }) => {
           sx={{
             fontSize: '1.125rem',
             color: theme.palette.custom.gray1,
+            "@media (max-width: 750px)": {
+              fontSize: "0.875rem",
+            },
           }}
         >
           {redeemPageProps?.welcome_phrase}

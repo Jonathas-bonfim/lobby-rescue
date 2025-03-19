@@ -9,6 +9,7 @@ const Footer: React.FC = () => {
         bottom: '20px',
         textAlign: 'center',
         color: '#64748B',
+        paddingInline: '0.375rem'
       }}
     >
       <Typography>

@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, CircularProgress, Container } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
@@ -14,6 +14,7 @@ import ResgateConfirmation from '../../components/Steps/ResgateConfirmation';
 import Welcome from '../../components/Steps/Welcome';
 import theme from '../../styles/theme';
 import { defaultValuesRedeemForm, deliveryRecipientSchema, RedeemFormProps } from '../../validation';
+import { HomeContainer } from './styles'; // Importe a constante
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.WELCOME);
@@ -46,19 +47,7 @@ const Home = () => {
   });
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: redeemPageProps?.background_color ?? theme.palette.custom.backgroundBlue,
-        padding: '100px 115.5px',
-        boxSizing: 'border-box',
-      }}
-    >
+    <Box sx={HomeContainer(redeemPageProps?.background_color ?? theme.palette.custom.backgroundBlue)}>
       {isLoading ? (
         <CircularProgress color="primary" />
       ) : (
