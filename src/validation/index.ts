@@ -1,3 +1,4 @@
+import { cnpj, cpf } from "cpf-cnpj-validator";
 import * as yup from "yup";
 import { RedeemCreationProps } from "../@types/redeemForm";
 
@@ -6,8 +7,12 @@ export type RedeemFormProps = RedeemCreationProps;
 export const deliveryRecipientSchema = yup.object().shape({
   redeemer_document_number: yup
     .string()
-    .required(`O CPF ou CNPJ é de preenchimento obrigatório`)
-    .typeError(`O CPF ou CNPJ é de preenchimento obrigatório`),
+    .transform((value) => value.replace(/\D/g, ""))
+    .required("O CPF ou CNPJ é de preenchimento obrigatório")
+    .test("cpf-cnpj-valid", "CPF ou CNPJ inválido", (value) => {
+      if (!value) return false; // Se o valor for vazio, retorna falso
+      return cpf.isValid(value) || cnpj.isValid(value); // Valida se é um CPF ou CNPJ válido
+    }),
   redeemer_name: yup
     .string()
     .required("O nome é obrigatório")
@@ -19,8 +24,9 @@ export const deliveryRecipientSchema = yup.object().shape({
     .max(50, "O email pode ter no máximo 50 caracteres"),
   redeemer_zipcode: yup
     .string()
+    .transform((value) => value.replace(/\D/g, ""))
     .required("O CEP é obrigatório")
-    .max(8, "O CEP pode conter no máximo 8 caracteres"),
+    .length(8, "O CEP deve conter exatamente 8 dígitos"),
   redeemer_street: yup
     .string()
     .required("A rua é obrigatória")

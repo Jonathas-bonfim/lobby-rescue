@@ -19,6 +19,7 @@
     "@mui/x-date-pickers": "^7.27.3",
     "@tanstack/react-query": "^5.67.3",
     "axios": "^1.8.3",
+    "cpf-cnpj-validator": "^1.0.3",
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
