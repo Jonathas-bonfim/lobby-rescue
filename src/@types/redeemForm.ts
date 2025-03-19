@@ -10,7 +10,6 @@ export interface RedeemCreationProps {
   redeemer_city: string;
   redeemer_state: string;
   redeemer_country: string;
-  redeemer_phone: string;
   extra_question_responses: ExtraQuestionResponseRedeemCreationProps[];
   items: ItemRedeemCreationProps[];
 }

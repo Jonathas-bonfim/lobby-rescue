@@ -1,10 +1,13 @@
 import * as yup from "yup";
 import { RedeemCreationProps } from "../@types/redeemForm";
 
-export interface RedeemFormProps extends RedeemCreationProps {
-  id: number | null;
-}
+export type RedeemFormProps = RedeemCreationProps;
+
 export const deliveryRecipientSchema = yup.object().shape({
+  redeemer_document_number: yup
+    .string()
+    .required(`O CPF ou CNPJ é de preenchimento obrigatório`)
+    .typeError(`O CPF ou CNPJ é de preenchimento obrigatório`),
   redeemer_name: yup
     .string()
     .required("O nome é obrigatório")
@@ -39,22 +42,22 @@ export const deliveryRecipientSchema = yup.object().shape({
     .max(60, "A cidade pode conter no máximo 60 caracteres"),
   redeemer_state: yup.string().required("O estado é obrigatório"),
   redeemer_country: yup.string().required("O país é obrigatório"),
+  items: yup.array().nullable(),
+  extra_question_responses: yup.array().nullable(),
 });
 
 export const defaultValuesRedeemForm: RedeemFormProps = {
-  id: null,
+  redeemer_document_number: "",
+  redeemer_name: "",
+  redeemer_email: "",
   redeemer_zipcode: "",
+  redeemer_street: "",
+  redeemer_number: "",
   items: [],
   extra_question_responses: [],
-  redeemer_city: "",
   redeemer_complement: "",
-  redeemer_country: "",
-  redeemer_document_number: "",
-  redeemer_email: "",
-  redeemer_name: "",
   redeemer_neighborhood: "",
-  redeemer_number: "",
-  redeemer_phone: "",
+  redeemer_city: "",
   redeemer_state: "",
-  redeemer_street: "",
+  redeemer_country: "",
 };

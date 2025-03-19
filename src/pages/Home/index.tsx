@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, CircularProgress, Container } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
@@ -12,14 +13,16 @@ import Items from '../../components/Steps/Items';
 import ResgateConfirmation from '../../components/Steps/ResgateConfirmation';
 import Welcome from '../../components/Steps/Welcome';
 import theme from '../../styles/theme';
-import { RedeemFormProps } from '../../validation';
+import { defaultValuesRedeemForm, deliveryRecipientSchema, RedeemFormProps } from '../../validation';
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.WELCOME);
 
   const methods = useForm<RedeemFormProps>({
+    resolver: yupResolver(deliveryRecipientSchema as never),
     reValidateMode: 'onChange',
     mode: 'onChange',
+    defaultValues: defaultValuesRedeemForm,
   });
 
   const { handleSubmit } = methods;

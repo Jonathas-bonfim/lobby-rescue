@@ -105,7 +105,7 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
           <TextInput name="redeemer_name" label="Nome completo" />
         </Grid>
         <Grid size={{ lg: 6, md: 12 }}>
-          <TextInput name="redeemer_document_number" label="CPF ou CNPJ" />
+          <TextInput name="redeemer_document_number" label="CPF ou CNPJ" placeholder='999.999.999-99' />
         </Grid>
         <Grid size={{ lg: 6, md: 12 }}>
           <TextInput name="redeemer_email" label="E-mail" />
@@ -124,7 +124,7 @@ const DeliveryRecipientForm: React.FC<DeliveryRecipientFormProps> = ({ navigateT
           </Typography>
         </Grid>
         <Grid size={{ lg: 6, md: 12 }}>
-          <TextInput name="redeemer_zipcode" label="CEP" />
+          <TextInput name="redeemer_zipcode" label="CEP" placeholder='99.999-999' />
         </Grid>
         <Grid size={{ lg: 6, md: 12 }}>
           <TextInput name="redeemer_street" label="Rua" />
