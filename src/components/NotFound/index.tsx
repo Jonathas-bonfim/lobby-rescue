@@ -2,6 +2,8 @@ import { Box, Button, Container, Paper, Typography } from "@mui/material"
 import type React from "react"
 
 import lobbyImage from "../../assets/images/lobby-logo.png"
+import notFoundImagem from "../../assets/images/not-found.png"
+import theme from "../../styles/theme"
 
 const NotFound: React.FC = () => {
   return (
@@ -11,7 +13,6 @@ const NotFound: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         py: 4,
-        minHeight: "100vh",
       }}
     >
       <Container maxWidth="md">
@@ -22,6 +23,9 @@ const NotFound: React.FC = () => {
             borderRadius: 2,
             textAlign: "center",
             bgcolor: "background.paper",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <Box
@@ -36,89 +40,20 @@ const NotFound: React.FC = () => {
               marginBottom: "2rem",
             }}
           />
-
           <Box
+            component="img"
+            src={notFoundImagem}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              mb: 4,
+              width: '100%',
+              height: "auto",
+              objectFit: "contain",
+              borderRadius: "0.5rem",
+              marginBottom: "2rem",
+              "@media (max-width: 750px)": {
+                fontSize: "0.875rem",
+              },
             }}
-          >
-            <Typography
-              variant="h1"
-              component="span"
-              sx={{
-                color: "#F44336",
-                fontWeight: "bold",
-                fontSize: { xs: "3rem", md: "4rem" },
-              }}
-            >
-              4
-            </Typography>
-
-            <Box
-              sx={{
-                width: { xs: 100, md: 120 },
-                height: { xs: 100, md: 120 },
-                bgcolor: "#E3F2FD",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                mx: 1,
-                position: "relative",
-              }}
-            >
-              <Box
-                component="img"
-                src="/placeholder.svg?height=80&width=80"
-                alt="Caranguejo com óculos escuros"
-                sx={{
-                  width: { xs: 70, md: 80 },
-                  height: { xs: 70, md: 80 },
-                }}
-              />
-
-              <Typography
-                sx={{
-                  position: "absolute",
-                  top: "10px",
-                  left: "10px",
-                  color: "#3F51B5",
-                  fontWeight: "bold",
-                  fontSize: "1.5rem",
-                }}
-              >
-                ?
-              </Typography>
-
-              <Typography
-                sx={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "10px",
-                  color: "#3F51B5",
-                  fontWeight: "bold",
-                  fontSize: "1.5rem",
-                }}
-              >
-                ?
-              </Typography>
-            </Box>
-
-            <Typography
-              variant="h1"
-              component="span"
-              sx={{
-                color: "#F44336",
-                fontWeight: "bold",
-                fontSize: { xs: "3rem", md: "4rem" },
-              }}
-            >
-              4
-            </Typography>
-          </Box>
+          />
 
           <Typography
             variant="h4"
@@ -148,7 +83,7 @@ const NotFound: React.FC = () => {
             variant="contained"
             href="/"
             sx={{
-              bgcolor: "#3F51B5",
+              bgcolor: theme.palette.custom.blueLobby,
               color: "white",
               px: 4,
               py: 1.5,
@@ -156,7 +91,7 @@ const NotFound: React.FC = () => {
               textTransform: "none",
               fontWeight: 500,
               "&:hover": {
-                bgcolor: "#303F9F",
+                bgcolor: theme.palette.custom.blueLobby,
               },
             }}
           >
